@@ -1,11 +1,9 @@
 'use client'
 import { useEffect, useState } from "react";
-import axios from 'axios';
-import { User as PeopleResponse } from "../types/api_types"; 
+import { User, APIResponse } from "../types/api_types"; 
 
 export const useRandomAPI = (url = "https://api.randomuser.me/") => {
-    const [data, setData] = useState<PeopleResponse | null>(null);
-    const [history, setHistory] = useState<PeopleResponse[]>([]);
+    const [data, setData] = useState<APIResponse | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -14,7 +12,7 @@ export const useRandomAPI = (url = "https://api.randomuser.me/") => {
         setError(null);
         try {
             const response = await fetch(url);
-            const result: PeopleResponse = await response.json();
+            const result: APIResponse = await response.json();
             setData(result);
             return result; // Return the fetched data
         } catch (error) {

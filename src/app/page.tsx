@@ -1,7 +1,6 @@
 'use client'
-
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import Card from "./components/card"; 
 import { useRandomAPI } from "./hooks/useRandomAPI"; 
 
@@ -12,8 +11,8 @@ const Page: React.FC = () => {
       await fetchData(); 
     };
 
-    const exampleImageSrc = 'https://via.placeholder.com/300';
-    const exampleName = 'Example Card';
+    const user = data?.results?.[0]; // Access the first user from the results array
+
     const exampleIcons = [
         'https://via.placeholder.com/24',
         'https://via.placeholder.com/24',
@@ -23,11 +22,13 @@ const Page: React.FC = () => {
     return (
         <div>
             <h1>My Page</h1>
-            <Card
-                imageSrc={exampleImageSrc}
-                name={exampleName}
-                icons={exampleIcons}
-            />
+            {user && (
+                <Card
+                    imageSrc={user.picture.large}
+                    name={`${user.name.first} ${user.name.last}`}
+                    icons={exampleIcons}
+                />
+            )}
             <button onClick={handleGenerateUser} disabled={loading}>
                 {loading ? "Loading..." : "Generate Random User"}
             </button>
