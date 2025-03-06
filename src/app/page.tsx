@@ -2,16 +2,14 @@
 import Image from "next/image";
 import React from "react";
 import Card from "./components/card"; 
-import { useRandomAPI } from "./hooks/useRandomAPI"; 
+import { usePeopleApi } from "./hooks/usePeopleApi"; 
 
 const Page: React.FC = () => {
-    const { data, loading, error, fetchData } = useRandomAPI(); 
+    const { currentPerson, personHistory, error, loading, fetchData } = usePeopleApi() 
 
-    const handleGenerateUser = async () => {
-      await fetchData(); 
-    };
+    if (error) return <div>Error loading data</div>;
 
-    const user = data?.results?.[0]; // Access the first user from the results array
+
 
     const exampleIcons = [
         'https://via.placeholder.com/24',
@@ -21,15 +19,15 @@ const Page: React.FC = () => {
 
     return (
         <div>
-            <h1>My Page</h1>
-            {user && (
+            <h1>Current Person</h1>
+            {currentPerson && (
                 <Card
-                    imageSrc={user.picture.large}
-                    name={`${user.name.first} ${user.name.last}`}
+                    imageSrc={currentPerson.picture}
+                    name={currentPerson.name}
                     icons={exampleIcons}
                 />
             )}
-            <button onClick={handleGenerateUser} disabled={loading}>
+            <button onClick={fetchData} disabled={loading}>
                 {loading ? "Loading..." : "Generate Random User"}
             </button>
             {error && <p style={{ color: "red" }}>{error}</p>}
